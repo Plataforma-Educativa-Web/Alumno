@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pe.cibertec.ProyectoFinal.ApiAlumno.dto.AlumnoDTO;
+
 import pe.cibertec.ProyectoFinal.ApiAlumno.entity.Alumno;
+
 import pe.cibertec.ProyectoFinal.ApiAlumno.service.AlumnoService;
 
 @RestController
@@ -23,6 +26,8 @@ public class AlumnoController {
     @Autowired
     
     private AlumnoService alumnoService;
+
+    
     
     @GetMapping("/findAll")
     
@@ -40,6 +45,13 @@ public class AlumnoController {
         
     }
     
+    @GetMapping("/findByCodigoA/{codigoA}")
+    
+    public ResponseEntity<Alumno> findByCodigoA (@PathVariable Long codigoA) {
+        
+        return new ResponseEntity<>(alumnoService.findByCodigoA(codigoA), HttpStatus.OK);
+        
+    }
     
     
     @GetMapping("/buscarPorId/{id}")
@@ -72,6 +84,14 @@ public class AlumnoController {
         
         alumnoService.eliminarAlumno(id);
         
+    }
+    
+        @GetMapping("/findById/{id}")
+
+    public ResponseEntity<AlumnoDTO> findById(@PathVariable Long id) {
+
+        return new ResponseEntity<>(alumnoService.findById(id), HttpStatus.OK);
+
     }
     
 }

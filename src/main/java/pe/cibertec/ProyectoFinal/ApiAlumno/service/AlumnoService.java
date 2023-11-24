@@ -1,6 +1,7 @@
 package pe.cibertec.ProyectoFinal.ApiAlumno.service;
 
 import java.util.List;
+import pe.cibertec.ProyectoFinal.ApiAlumno.dto.AlumnoDTO;
 import pe.cibertec.ProyectoFinal.ApiAlumno.entity.Alumno;
 
 public interface AlumnoService {
@@ -8,6 +9,10 @@ public interface AlumnoService {
     public List<Alumno> findAll();
 
     public Alumno buscarPorId(Long id);
+
+    public Alumno findByCodigoA(Long codigoA);
+    
+    public AlumnoDTO findById(Long id);
 
     public Alumno findByNombre(String nombre);
 

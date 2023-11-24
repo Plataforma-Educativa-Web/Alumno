@@ -7,4 +7,5 @@ import pe.cibertec.ProyectoFinal.ApiAlumno.entity.Alumno;
 public interface AlumnoRepository extends CrudRepository<Alumno, Long> {
 
     Optional<Alumno> findByNombre(String nombre);
+    Optional<Alumno> findByCodigoA(Long codigoA);
 }
