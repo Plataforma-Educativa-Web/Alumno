@@ -1,6 +1,7 @@
 package pe.cibertec.ProyectoFinal.ApiAlumno.serviceImpl;
 
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.cibertec.ProyectoFinal.ApiAlumno.dao.AlumnoRepository;
@@ -14,6 +15,7 @@ import pe.cibertec.ProyectoFinal.ApiAlumno.restClient.CarreraRestClient;
 import pe.cibertec.ProyectoFinal.ApiAlumno.restClient.SedeRestClient;
 
 @Service
+@Slf4j
 
 public class AlumnoServiceImpl implements AlumnoService {
 
@@ -26,31 +28,34 @@ public class AlumnoServiceImpl implements AlumnoService {
     private SedeRestClient sedeRestClient;
 
     @Autowired
-    
+
     private CarreraRestClient carreraRestClient;
-    
+
     @Override
     public List<Alumno> findAll() {
+        log.info("Obteniendo todos los alumnos");
 
         return (List<Alumno>) alumnoRepository.findAll();
 
     }
 
     public List<Sede> findAllSede() {
+        log.info("Obteniendo todas las sedes");
 
         return (List<Sede>) sedeRestClient.findAllSede();
 
     }
-    
+
     public List<Carrera> findAllCarrera() {
-        
+        log.info("Obteniendo todas las carreras");
+
         return (List<Carrera>) carreraRestClient.findAllCarrera();
-        
+
     }
-    
 
     @Override
     public Alumno findByNombre(String nombre) {
+        log.info("Buscando alumno por nombre: {}", nombre);
 
         return alumnoRepository.findByNombre(nombre).orElseThrow(() -> new EntityNotFoundException("Alumno no encontrado con el nombre " + nombre.toString()));
 
@@ -58,6 +63,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public Alumno buscarPorId(Long id) {
+        log.info("Buscando alumno por ID: {}", id);
 
         return alumnoRepository.findById(id).orElseThrow(()
                 -> new EntityNotFoundException("Alumno no encontrado con el id " + id.toString()));
@@ -66,6 +72,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public Alumno agregarAlumno(Alumno alumno) {
+        log.info("Agregando nuevo alumno");
 
         return alumnoRepository.save(alumno);
 
@@ -73,6 +80,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public Alumno actualizarAlumno(Alumno alumno) {
+        log.info("Actualizando alumno con ID: {}", alumno.getId());
 
         var AlumnoF = alumnoRepository.findById(alumno.getId()).get();
         AlumnoF.setCodigoA(alumno.getCodigoA());
@@ -89,6 +97,7 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public void eliminarAlumno(Long id) {
+        log.info("Eliminando alumno con ID: {}", id);
 
         var AlumnoF = alumnoRepository.findById(id).get();
 
@@ -98,16 +107,16 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public AlumnoDTO findById(Long id) {
+        log.info("Buscando alumno por ID: {}", id);
 
         Alumno alumno = alumnoRepository.findById(id).get();
 
         Sede sede = sedeRestClient.findByCodigoS(alumno.getCodigoS());
-        
+
         Carrera carrera = carreraRestClient.findByCodigoC(alumno.getCodigoC());
 
         AlumnoDTO alumnoDTO = new AlumnoDTO();
 
-        
         alumnoDTO.setId(alumno.getId());
         alumnoDTO.setCodigoA(alumno.getCodigoA());
         alumnoDTO.setNombre(alumno.getNombre());
@@ -126,8 +135,9 @@ public class AlumnoServiceImpl implements AlumnoService {
 
     @Override
     public Alumno findByCodigoA(Long codigoA) {
-        
-        return alumnoRepository.findByCodigoA(codigoA).orElseThrow(() ->  new EntityNotFoundException("Alumno no encontrado con el codigoA"+codigoA.toString()));
-        
+        log.info("Buscando alumno por códigoA: {}", codigoA);
+
+        return alumnoRepository.findByCodigoA(codigoA).orElseThrow(() -> new EntityNotFoundException("Alumno no encontrado con el codigoA" + codigoA.toString()));
+
     }
 }
